@@ -1,0 +1,143 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<head>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            padding-top: 80px;
+        }
+        .navbar {
+            margin-bottom: 20px;
+            border-bottom: 2px solid #dee2e6;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1050;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8rem;
+        }
+        .contact-info {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .contact-info p {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+        .contact-info .btn {
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        .contact-info .btn:hover {
+            transform: scale(1.1);
+        }
+        .social-icons i {
+            font-size: 2rem;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        .social-icons i:hover {
+            color: #007bff;
+        }
+        .contact-card {
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .contact-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        img {
+            width: 100%;   /* 自适应宽度 */
+            height: auto;  /* 保持比例 */
+            max-width: 300px;  /* 设置最大宽度 */
+            max-height: 300px; /* 设置最大高度 */
+        }
+    </style>
+</head>
+
+<!-- 联系我部分 -->
+<div class="container py-5">
+    <div class="contact-info">
+        <h3>联系我</h3>
+        <p>如果你有任何问题、合作机会，或者只是想交流一些技术心得，欢迎通过以下方式联系我：</p>
+
+        <!-- 社交平台链接 -->
+        <div class="social-icons text-center">
+            <a href="https://github.com/yigebianchengyaoyao" target="_blank"><i class="bi bi-github"></i></a>
+        </div>
+
+        <p class="mt-4">此外，你也可以通过以下方式直接与我取得联系：+86 19133983375</p>
+        <div class="text-center">
+            <a href="mailto:2910636674@qq.com" class="btn btn-primary">通过电子邮件联系我</a>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#wechatModal">
+                微信二维码
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#douyinModal">
+                抖音二维码
+            </button>
+        </div>
+    </div>
+
+    <!-- 微信二维码模态框 -->
+    <div class="modal fade" id="wechatModal" tabindex="-1" aria-labelledby="wechatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="wechatModalLabel">微信二维码</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <!-- 微信二维码图片 -->
+                    <img src="{% static 'images/weixin.jpg' %}" alt="微信二维码">
+                    <p>扫描二维码添加我为微信好友。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 抖音二维码模态框 -->
+    <div class="modal fade" id="douyinModal" tabindex="-1" aria-labelledby="douyinModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="douyinModalLabel">抖音二维码</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <!-- 抖音二维码图片 -->
+                    <img src="{% static 'images/douyin.jpg' %}" alt="抖音二维码">
+                    <p>扫描二维码关注我的抖音。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 电子邮件部分 -->
+    <div class="contact-card">
+        <h4>我的联系方式：</h4>
+        <ul>
+            <li>电子邮件：<a href="mailto:2910636674@qq.com">2910636674@qq.com</a></li>
+            <li>GitHub：<a href="https://github.com/yigebianchengyaoyao" target="_blank">github.com/yigebianchengyaoyao</a></li>
+            <li>微信：jiayaoyu2910636674</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

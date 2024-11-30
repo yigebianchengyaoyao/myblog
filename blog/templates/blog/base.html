@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}个人博客{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- 引入 Magic UI 的 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magic-ui/dist/css/magic-ui.css">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS (必须包含 Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #1d1f21;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        main {
+            padding: 20px;
+            background-color: white;
+            max-width: 960px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #1d1f21;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        .artwork img {
+    width: 100%;  /* 图片填满容器 */
+    height: auto;  /* 自适应高度，保持比例 */
+  }
+        .artworks-gallery {
+            display: grid;
+     grid-template-columns: repeat(3, 1fr);  /* 每行显示 3 张图片 */
+    gap: 16px;  }
+        /* 鼠标悬停时改变按钮颜色 */
+.m-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* 鼠标悬停时改变上传按钮的阴影 */
+.m-btn-primary:hover {
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>个人博客</h1>
+        <nav>
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li><a href="/art_share/">艺术分享</a></li>
+                <li><a href="/upload_artwork/">上传作品</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- 这里是页面的核心内容 -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 个人博客 | 版权所有</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ article.title }}">
+    <title>{{ article.title }}</title>
+
+    <!-- 引入本地的 Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- 清新风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* 清新风格背景 */
+        body {
+            background: linear-gradient(135deg, #e9ecef, #d7e5e5);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* 文章内容区 */
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* 文章标题 */
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            color: #00796b;
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 3px solid #00796b; /* 底部边界 */
+            padding-bottom: 10px; /* 内部填充 */
+        }
+
+        /* 图片样式 */
+        .img-fluid {
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* 增加过渡效果 */
+        }
+
+        .img-fluid:hover {
+            transform: scale(1.05); /* 悬停时放大 */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* 悬停时阴影效果 */
+        }
+
+        /* 文章内容样式 */
+        p {
+           font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    text-align: justify;
+    margin-bottom: 30px;
+    word-wrap: break-word; /* 允许长单词换行 */
+    overflow-wrap: break-word;
+        }
+
+        /* 按钮样式 */
+        .btn-primary {
+            background-color: #00796b;
+            border-color: #00796b;
+            border-radius: 50px;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 121, 107, 0.2);
+            display: inline-block;
+            margin-top: 20px; /* 按钮上间距 */
+        }
+
+        .btn-primary:hover {
+            background-color: #004d40;
+            border-color: #004d40;
+            transform: scale(1.05);
+        }
+
+        .btn-primary:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 121, 107, 0.5);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .container {
+                padding: 25px;
+            }
+
+            .img-fluid {
+                max-height: 300px;
+            }
+
+            .btn-primary {
+                width: 100%;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ article.title }}</h1>
+        </header>
+
+        <!-- 图片展示部分 -->
+        {% if article.image %}
+        <div class="text-center mb-4">
+            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid rounded" />
+        </div>
+        {% endif %}
+
+        <!-- 文章内容展示 -->
+        <main>
+            <p>{{ article.content|linebreaksbr }}</p>
+        </main>
+
+        <!-- 返回按钮 -->
+        <a href="{% url 'article_list' %}" class="btn btn-primary" role="button" aria-label="返回文章列表">返回文章列表</a>
+    </div>
+
+    <!-- 增加SEO和可访问性元数据 -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Your Website Name">
+
+</body>
+</html>

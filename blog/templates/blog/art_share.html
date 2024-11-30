@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+  <h1>艺术分享</h1>
+<form method="POST" enctype="multipart/form-data" class="m-form">
+  {% csrf_token %}
+
+  <!-- 使用 MagicUI 的表单组件样式 -->
+  <div class="m-form-item">
+    {{ form.as_p }}
+  </div>
+
+  <!-- 上传按钮 -->
+  <button type="submit" class="m-btn m-btn-primary m-btn-lg m-btn-block">
+    <i class="m-icon m-icon-upload"></i> 上传艺术作品
+  </button>
+
+  <!-- 重置按钮（如果需要的话）-->
+  <button type="reset" class="m-btn m-btn-secondary m-btn-lg m-btn-block">
+    <i class="m-icon m-icon-reset"></i> 重置表单
+  </button>
+</form>
+
+
+  <h2>已上传的艺术作品：</h2>
+  <div class="artworks-gallery">
+    {% for artwork in artworks %}
+      <div class="artwork">
+        <img src="{{ artwork.image.url }}" alt="Artwork" class="m-image m-round m-shadow-medium" style="width: 100%; height: 100%;">
+      </div>
+    {% empty %}
+      <p>没有艺术作品。</p>
+    {% endfor %}
+  </div>
+{% endblock %}

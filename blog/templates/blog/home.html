@@ -1,0 +1,368 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>破镜之刃</title>
+    <!-- 引入 MagicUI 和 Bootstrap -->
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+   <style>
+       body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7fa;
+    padding-top: 80px; /* 这里根据导航栏的高度设置合适的间距 */
+}
+        h1,h2,h3{
+             font-family: 'Poppins', sans-serif;
+        }
+         #map {
+            height: 500px; /* 设置地图高度 */
+            width: 100%; /* 设置地图宽度 */
+        }
+        .navbar {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #dee2e6;
+    position: fixed;
+    top: 0; /* 确保导航栏在最顶部 */
+    width: 100%;
+    z-index: 1050; /* 确保导航栏在最前面 */
+}
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8rem;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card img{
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .card img.loaded{
+            opacity: 1;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            border-radius: 10px 10px 0 0;
+        }
+        .card-body {
+            background-color: #ffffff;
+            padding: 1.5rem;
+        }
+        .card-text {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+            transform: scale(1.05);
+        }
+
+        .intro-section {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            background: linear-gradient(to right, rgba(0, 123, 255, 0.7), rgba(255, 255, 255, 0.7));
+    background-size: cover;
+    background-position: center;
+        }
+        .intro-section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .intro-section p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        .search-box {
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            max-height: 400px; /* 控制图片的最大高度 */
+            object-fit: cover; /* 保持图片比例，并裁剪超出部分 */
+        }
+
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .navbar-nav a {
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        .navbar-nav a:hover {
+            color: #007bff;
+        }
+        /* 社交账号联系框的样式 */
+        .social-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to right, rgba(0, 123, 255, 0.3), rgba(255, 255, 255, 0.3)); /* 蓝白透明渐变 */
+    padding: 30px;
+    margin-top: 30px;
+}
+
+        .social-card .btn {
+            font-size: 1.2rem;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        .social-card .btn:hover {
+            transform: scale(1.1);
+        }
+        /* Flexbox 布局，简化并排 */
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .flex-container .intro-section, .flex-container .social-card {
+            flex: 1;
+        }
+        .parallax {
+    background-image: url('{% static "images/background.jpg" %}');
+    height: 100vh;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+         .video-background video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+           /* 背景视频 */
+        .carousel {
+            position: relative;
+            height: 500px; /* 可根据需要调整高度 */
+        }
+        .carousel-inner {
+            position: relative;
+            z-index: 1;
+        }
+        .carousel-item {
+            height: 100%;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8; /* 轮播图图片透明 */
+        }
+
+        /* 背景视频样式 */
+        .carousel-background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const images = document.querySelectorAll('.card img');
+    images.forEach(img => {
+        img.onload = () => img.classList.add('loaded');
+    });
+});
+         function initMap() {
+        var location = {lat: -34.397, lng: 150.644};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: location
+        });
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+    }
+
+
+    </script>
+</head>
+<body>
+<div class="video-background">
+    <video autoplay loop muted>
+        <source src="{% static 'videos/background.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">个人博客</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'article_list' %}">文章</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">关于我</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">项目展示</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">博客分类</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'call_me' %}">联系我</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="{% url 'art_share' %}">艺术分享</a></li>
+                    <li class="nav-item"><a class="nav-link"><img src="{% static 'images/4.jpg' %}" alt="头像" class="rounded-circle" width="30" height="30"></a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+
+
+    <!-- Flexbox 布局的简介和社交账号联系框 -->
+    <div class="container flex-container">
+        <!-- 博客简介部分 -->
+        <div class="intro-section">
+            <h2>欢迎来到我的个人博客！</h2>
+            <p>你好，我是品味你的温柔，目前是一名计算机相关专业的大学生，热衷于编程、Web开发和人工智能的学习。在这个博客中，我将分享我在学习过程中积累的技术经验、项目开发的心得，以及一些关于学术和生活的思考。</p>
+            <p>作为一名正在不断成长中的技术爱好者，我的博客将记录我的学习历程、编程挑战以及一些有趣的开发项目。如果你对计算机科学、编程技术、Web开发等话题感兴趣，欢迎随时与我交流。</p>
+            <p>希望我的博客能够帮助你在技术的世界中找到一些启发，并一起探讨和分享知识。</p>
+        </div>
+
+<!-- 社交账号联系框 -->
+
+<div class="social-card">
+    <h3>网络账号联系我</h3>
+    <p>通过以下社交平台联系我：</p>
+    <div class="d-flex justify-content-start flex-wrap">
+        <a href="https://github.com/yigebianchengyaoyao" target="_blank" class="btn btn-dark"><i class="bi bi-github"></i> GitHub</a>
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#wechatModal">
+            <i class="bi bi-wechat"></i> 微信
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#douyinModal">
+            <i class="bi bi-youtube"></i> 抖音
+        </button>
+    </div>
+
+    <!-- IT 相关词语块 -->
+    <div class="it-terms mt-3" style="background: rgba(0, 123, 255, 0.3); padding: 20px; border-radius: 10px;">
+        <span class="badge bg-primary text-light me-2 mb-2 fs-5">编程</span>
+        <span class="badge bg-success text-light me-2 mb-2 fs-5">算法</span>
+        <span class="badge bg-warning text-dark me-2 mb-2 fs-5">数据结构</span>
+        <span class="badge bg-info text-light me-2 mb-2 fs-5">人工智能</span>
+        <span class="badge bg-danger text-light me-2 mb-2 fs-5">云计算</span>
+        <span class="badge bg-secondary text-light me-2 mb-2 fs-5">开源</span>
+        <span class="badge bg-primary text-light me-2 mb-2 fs-5">前端开发</span>
+        <span class="badge bg-success text-light me-2 mb-2 fs-5">后端开发</span>
+        <span class="badge bg-warning text-dark me-2 mb-2 fs-5">机器学习</span>
+        <span class="badge bg-info text-light me-2 mb-2 fs-5">深度学习</span>
+        <span class="badge bg-danger text-light me-2 mb-2 fs-5">数据科学</span>
+        <span class="badge bg-secondary text-light me-2 mb-2 fs-5">算法优化</span>
+        <span class="badge bg-primary text-light me-2 mb-2 fs-5">Web开发</span>
+        <span class="badge bg-success text-light me-2 mb-2 fs-5">API</span>
+        <span class="badge bg-warning text-dark me-2 mb-2 fs-5">数据库</span>
+        <span class="badge bg-info text-light me-2 mb-2 fs-5">云服务</span>
+        <span class="badge bg-danger text-light me-2 mb-2 fs-5">大数据</span>
+        <span class="badge bg-secondary text-light me-2 mb-2 fs-5">区块链</span>
+        <span class="badge bg-primary text-light me-2 mb-2 fs-5">移动开发</span>
+        <span class="badge bg-success text-light me-2 mb-2 fs-5">数据分析</span>
+    </div>
+</div>
+
+
+
+
+
+</div>
+
+    </div>
+
+    <!-- 微信二维码模态框 -->
+    <div class="modal fade" id="wechatModal" tabindex="-1" aria-labelledby="wechatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="wechatModalLabel">微信二维码</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="{% static 'images/weixin.jpg' %}" class="img-fluid" alt="微信二维码">
+                    <p>扫描二维码添加我为微信好友。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 抖音二维码模态框 -->
+    <div class="modal fade" id="douyinModal" tabindex="-1" aria-labelledby="douyinModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="douyinModalLabel">抖音二维码</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="{% static 'images/douyin.jpg' %}" class="img-fluid" alt="抖音二维码">
+                    <p>扫描二维码关注我的抖音。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+     <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p>&copy; 2024 个人博客 - 版权所有</p>
+            <p>备案号: <a href="https://beian.miit.gov.cn/" class="text-white" target="_blank">京ICP备12345678号</a></p>
+            <p>作者: 品味你的温柔</p>
+            <p>本博客内容仅供学习和交流，所有资源来自互联网，如有侵权，请联系我们。</p>
+        </div>
+    </footer>
+
+<!-- 引入Bootstrap 5（如果你还没有加载）-->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+</body>
+</html>
